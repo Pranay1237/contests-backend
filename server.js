@@ -2,7 +2,6 @@ import express from 'express';
 import puppeteer from 'puppeteer';
 import { JSDOM } from 'jsdom';
 import axios from 'axios';
-import cheerio from 'cheerio';
 
 const app = express();
 const port = 3000;
@@ -59,6 +58,57 @@ const scrapeLeetcode = async () => {
 	}
 }
 
+const scrapeCodeforces = async () => {
+	const browser = await puppeteer.launch();
+	const page = await browser.newPage();
+
+	await page.setViewport({ width: 1080, height: 1024 });
+
+	await page.goto('https://codeforces.com/contests', { waitUntil: 'networkidle0' });
+
+	const htmlContent = await page.content();
+
+	await page.close();
+
+	const contests = [];
+
+	const dom = new JSDOM(htmlContent);
+	const table = dom.window.document.querySelectorAll("table");
+	const rows = table[0].querySelectorAll("tr");
+	for(let i = 1; i < rows.length; i++) {
+		const cols = rows[i].querySelectorAll("td");
+		const name = cols[0].textContent.trim();
+		const start = cols[2].textContent.trim();
+		const duration = cols[3].textContent.trim();
+		const startsIn = cols[4].textContent.trim();
+		let register = cols[5].querySelector("a");
+		if(register)
+			register = register.getAttribute("href");
+		else
+			register = "";
+
+		const contest = {
+			name: name,
+			start: start,
+			duration: duration,
+			startsIn: startsIn,
+			register: (register != "" ? "https://codeforces.com" + register : "")
+		};
+
+		contests.push(contest);
+		
+	}
+	return JSON.stringify(contests);
+};
+
+const scrapeCTF = async () => {
+	try {
+		const response = await axios.get('https://ctftime.org/api/v1/events/?limit=100&start=1422019499&finish=1423029499');
+		return response;
+	} catch (error) {
+		throw new Error('An error occurred while scraping the CTF events.');
+	}
+};
 
 app.use(express.json());
 
@@ -80,8 +130,26 @@ app.get('/leetcode', (req, res) => {
 		console.error(error);
 		res.send("An error occurred while scraping the contests.");
 	}).then((contests) => {
-		let con = contests.slice(0, 2);
-		res.send(con);
+		const ans = contests.data.allContests.slice(0, 2);
+		res.send(ans);
+	});
+});
+
+app.get('/codeforces', (req, res) => {
+	scrapeCodeforces().catch((error) => {
+		console.error(error);
+		res.send("An error occurred while scraping the contests.");
+	}).then((contests) => {
+		res.send(contests);
+	});
+});
+
+app.get('/ctf', (req, res) => {
+	scrapeCTF().catch((error) => {
+		console.error(error);
+		res.send("An error occurred while scraping the contests.");
+	}).then((contests) => {
+		res.send(contests);
 	});
 });
 
