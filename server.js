@@ -1,6 +1,8 @@
 import express from 'express';
 import puppeteer from 'puppeteer';
 import { JSDOM } from 'jsdom';
+import axios from 'axios';
+import cheerio from 'cheerio';
 
 const app = express();
 const port = 3000;
@@ -48,8 +50,21 @@ const scrapeCodechef = async () => {
 	return contestsJSON;
 };
 
+const scrapeLeetcode = async () => {
+	try {
+		const response = await axios.get('https://leetcode.com/graphql?query={ allContests { title titleSlug startTime duration __typename } }');
+		return response.data;
+	} catch (error) {
+		throw new Error('An error occurred while scraping the contests.');
+	}
+}
+
 
 app.use(express.json());
+
+app.get('/', (req, res) => {
+	res.send("Welcome to the contest scraper API.");
+});
 
 app.get('/codechef', (req, res) => {
     scrapeCodechef().catch((error) => {
@@ -58,6 +73,16 @@ app.get('/codechef', (req, res) => {
     }).then((contests) => {
         res.send(contests);
     });
+});
+
+app.get('/leetcode', (req, res) => {
+	scrapeLeetcode().catch((error) => {
+		console.error(error);
+		res.send("An error occurred while scraping the contests.");
+	}).then((contests) => {
+		let con = contests.slice(0, 2);
+		res.send(con);
+	});
 });
 
 app.listen(port, () => {
