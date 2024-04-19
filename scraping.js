@@ -33,16 +33,16 @@ const scrapeCodechef = async () => {
 
 	for (let i = 0; i < rows.length; i++) {
 		const cols = rows[i].querySelectorAll("td");
-		const name = cols[0].textContent.trim();
-		const start = cols[1].textContent.trim();
-		const end = cols[2].textContent.trim();
+		const code = cols[0].textContent.trim();
+		const name = cols[1].textContent.trim();
+		const start = cols[2].textContent.trim();
 		const duration = cols[3].textContent.trim();
 		const link = cols[1].querySelector("a").getAttribute("href");
 
 		const contest = {
+			code: code,
 			name: name,
 			start: start,
-			end: end,
 			duration: duration,
 			link: link
 		};
