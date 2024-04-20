@@ -2,7 +2,6 @@ import puppeteer from 'puppeteer';
 import { JSDOM } from 'jsdom';
 import axios from 'axios';
 
-
 const scrapeLeetcode = async () => {
 	try {
 		const response = await axios.get('https://leetcode.com/graphql?query={ allContests { title titleSlug startTime duration __typename } }');
@@ -13,7 +12,7 @@ const scrapeLeetcode = async () => {
 };
 
 const scrapeCodechef = async () => {
-	const browser = await puppeteer.launch({ headless: true });
+	const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] }); // Add --no-sandbox flag
 	const page = await browser.newPage();
 
 	await page.setViewport({ width: 1080, height: 1024 });
@@ -56,7 +55,7 @@ const scrapeCodechef = async () => {
 };
 
 const scrapeCodeforces = async () => {
-	const browser = await puppeteer.launch({ headless: true });
+	const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] }); // Add --no-sandbox flag
 	const page = await browser.newPage();
 
 	await page.setViewport({ width: 1080, height: 1024 });
