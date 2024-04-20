@@ -13,7 +13,7 @@ const scrapeLeetcode = async () => {
 };
 
 const scrapeCodechef = async () => {
-	const browser = await puppeteer.launch();
+	const browser = await puppeteer.launch({ headless: true });
 	const page = await browser.newPage();
 
 	await page.setViewport({ width: 1080, height: 1024 });
@@ -56,7 +56,7 @@ const scrapeCodechef = async () => {
 };
 
 const scrapeCodeforces = async () => {
-	const browser = await puppeteer.launch();
+	const browser = await puppeteer.launch({ headless: true });
 	const page = await browser.newPage();
 
 	await page.setViewport({ width: 1080, height: 1024 });
