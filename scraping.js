@@ -40,7 +40,7 @@ const scrapeCodeforces = async () => {
 			const startsIn = cols[4].textContent.trim();
 			let register = cols[5].querySelector("a");
 			if(register)
-				register = register.getAttribute("href");
+				register = "https://codeforces.com" + register.getAttribute("href");
 			else
 				register = "";
 
@@ -49,7 +49,7 @@ const scrapeCodeforces = async () => {
 				start: start,
 				duration: duration,
 				startsIn: startsIn,
-				register: (register != "" ? "https://codeforces.com" + register : "")
+				register: register
 			};
 
 			contests.push(contest);
