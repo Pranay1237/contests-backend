@@ -12,12 +12,20 @@ const scrapeLeetcode = async () => {
 };
 
 const scrapeCodechef = async () => {
+
+	// try {
+	// 	const response = await axios.get('https://www.codechef.com/contests');
+	// 	console.log(response.data);
+	// } catch (error) {
+	// 	throw new Error('An error occurred while scraping the contests.');
+	// }
+
 	const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] }); // Add --no-sandbox flag
 	const page = await browser.newPage();
 
 	await page.setViewport({ width: 1080, height: 1024 });
 
-	await page.goto('https://www.codechef.com/contests', { waitUntil: 'networkidle0' });
+	await page.goto('https://www.codechef.com/contests', { waitUntil: 'networkidle0', timeout: 60000});
 
 	const htmlContent = await page.content();
 
@@ -60,7 +68,7 @@ const scrapeCodeforces = async () => {
 
 	await page.setViewport({ width: 1080, height: 1024 });
 
-	await page.goto('https://codeforces.com/contests', { waitUntil: 'networkidle0' });
+	await page.goto('https://codeforces.com/contests', { waitUntil: 'networkidle0', timeout: 60000});
 
 	const htmlContent = await page.content();
 
