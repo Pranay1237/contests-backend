@@ -54,7 +54,7 @@ const scrapeCodeforces = async () => {
 
 			contests.push(contest);
 		}
-		return JSON.stringify(contests);
+		return contests;
 	} catch (error) {
 		throw new Error('An error occurred while scraping the contests.');
 	}
