@@ -63,46 +63,42 @@ const scrapeCodechef = async () => {
 };
 
 const scrapeCodeforces = async () => {
-	const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] }); // Add --no-sandbox flag
-	const page = await browser.newPage();
 
-	await page.setViewport({ width: 1080, height: 1024 });
+	try {
+		const response = await axios.get('https://codeforces.com/contests');
+		// console.log(response.data);
 
-	await page.goto('https://codeforces.com/contests', { waitUntil: 'networkidle0', timeout: 60000});
+		const contests = [];
 
-	const htmlContent = await page.content();
+		const dom = new JSDOM(response.data);
+		const table = dom.window.document.querySelector("table");
+		const rows = table.querySelectorAll("tr");
+		for(let i = 1; i < rows.length; i++) {
+			const cols = rows[i].querySelectorAll("td");
+			const name = cols[0].textContent.trim();
+			const start = cols[2].textContent.trim();
+			const duration = cols[3].textContent.trim();
+			const startsIn = cols[4].textContent.trim();
+			let register = cols[5].querySelector("a");
+			if(register)
+				register = register.getAttribute("href");
+			else
+				register = "";
 
-	await page.close();
+			const contest = {
+				name: name,
+				start: start,
+				duration: duration,
+				startsIn: startsIn,
+				register: (register != "" ? "https://codeforces.com" + register : "")
+			};
 
-	const contests = [];
-
-	const dom = new JSDOM(htmlContent);
-	const table = dom.window.document.querySelectorAll("table");
-	const rows = table[0].querySelectorAll("tr");
-	for(let i = 1; i < rows.length; i++) {
-		const cols = rows[i].querySelectorAll("td");
-		const name = cols[0].textContent.trim();
-		const start = cols[2].textContent.trim();
-		const duration = cols[3].textContent.trim();
-		const startsIn = cols[4].textContent.trim();
-		let register = cols[5].querySelector("a");
-		if(register)
-			register = register.getAttribute("href");
-		else
-			register = "";
-
-		const contest = {
-			name: name,
-			start: start,
-			duration: duration,
-			startsIn: startsIn,
-			register: (register != "" ? "https://codeforces.com" + register : "")
-		};
-
-		contests.push(contest);
-		
+			contests.push(contest);
+		}
+		return JSON.stringify(contests);
+	} catch (error) {
+		throw new Error('An error occurred while scraping the contests.');
 	}
-	return JSON.stringify(contests);
 };
 
 const scrapeCTF = async () => {
