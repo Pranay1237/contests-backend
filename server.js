@@ -14,40 +14,48 @@ app.get('/', (req, res) => {
 });
 
 app.get('/codechef', (req, res) => {
-    scrapeCodechef().catch((error) => {
-        console.error(error);
-        res.send("An error occurred while scraping the contests.");
-    }).then((contests) => {
-        res.send(contests);
-    });
+    scrapeCodechef()
+        .then((contests) => {
+            res.send(contests);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("An error occurred while scraping the contests.");
+        });
 });
 
 app.get('/leetcode', (req, res) => {
-	scrapeLeetcode().catch((error) => {
-		console.error(error);
-		res.send("An error occurred while scraping the contests.");
-	}).then((contests) => {
-		const ans = contests.data.allContests.slice(0, 2);
-		res.send(ans);
-	});
+    scrapeLeetcode()
+        .then((contests) => {
+            const ans = contests.data.allContests.slice(0, 2);
+            res.send(ans);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("An error occurred while scraping the contests.");
+        });
 });
 
 app.get('/codeforces', (req, res) => {
-	scrapeCodeforces().catch((error) => {
-		console.error(error);
-		res.send("An error occurred while scraping the contests.");
-	}).then((contests) => {
-		res.send(contests);
-	});
+    scrapeCodeforces()
+        .then((contests) => {
+            res.send(contests);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("An error occurred while scraping the contests.");
+        });
 });
 
 app.get('/ctf', (req, res) => {
-	scrapeCTF().catch((error) => {
-		console.error(error);
-		res.send("An error occurred while scraping the contests.");
-	}).then((contests) => {
-		res.send(contests);
-	});
+    scrapeCTF()
+        .then((contests) => {
+            console.log(contests);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("An error occurred while scraping the contests.");
+        });
 });
 
 app.listen(port, () => {

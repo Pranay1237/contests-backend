@@ -1,4 +1,3 @@
-import puppeteer from 'puppeteer';
 import { JSDOM } from 'jsdom';
 import axios from 'axios';
 
@@ -62,7 +61,7 @@ const scrapeCodeforces = async () => {
 
 const scrapeCTF = async () => {
 	try {
-		const response = await axios.get('https://ctftime.org/api/v1/events/?limit=100&start=1422019499&finish=1423029499');
+		const response = await axios.get('https://ctftime.org/api/v1/events/?limit=100&start=1713810571&finish=1714481971');
 		return response;
 	} catch (error) {
 		throw new Error('An error occurred while scraping the CTF events.');
