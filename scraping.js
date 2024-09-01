@@ -2,10 +2,11 @@ import { JSDOM } from 'jsdom';
 import axios from 'axios';
 
 import { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime } from './utils/convertions.js';
+import { leetcodeLink, codechefLink, codeforcesLink, ctfLink } from './utils/links.js';
 
 const scrapeLeetcode = async () => {
 	try {
-		const response = await axios.get('https://leetcode.com/graphql?query={ allContests { title titleSlug startTime duration __typename } }');
+		const response = await axios.get(leetcodeLink);
 		return response.data;
 	} catch (error) {
 		throw new Error('An error occurred while scraping the contests.');
@@ -15,7 +16,7 @@ const scrapeLeetcode = async () => {
 const scrapeCodechef = async () => {
 
 	try {
-		const response = await axios.get('https://www.codechef.com/api/list/contests/all?sort_by=START&sorting_order=asc&offset=0&mode=premium');
+		const response = await axios.get(codechefLink);
 		// console.log(response.data);
 		return response.data.future_contests;
 	} catch (error) {
@@ -26,7 +27,7 @@ const scrapeCodechef = async () => {
 const scrapeCodeforces = async () => {
 
 	try {
-		const response = await axios.get('https://codeforces.com/api/contest.list?gym=false');
+		const response = await axios.get(codeforcesLink);
 
 		const c = response.data.result;
 		const upcomingContests = c.filter(contest => contest.phase === 'BEFORE');
@@ -57,7 +58,7 @@ const scrapeCodeforces = async () => {
 
 const scrapeCTF = async () => {
 	try {
-		const response = await axios.get('https://ctftime.org/api/v1/events/?limit=100&start=1713810571&finish=1714481971');
+		const response = await axios.get(ctfLink);
 		return response;
 	} catch (error) {
 		throw new Error('An error occurred while scraping the CTF events.');
