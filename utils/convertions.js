@@ -1,0 +1,20 @@
+
+const convertSecondsToHoursAndMinutes = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return { hours, minutes };
+};
+
+const convertSecondsToLocaleStartTime = (seconds) => {
+    if (seconds < 0) {
+        seconds = Math.abs(seconds);
+        const days = Math.floor(seconds / 86400);
+        const hours = Math.floor((seconds % 86400) / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        return { days, hours, minutes };
+    }
+    const date = new Date(seconds * 1000);
+    return date.toDateString() + ' ' + date.toLocaleTimeString();
+};
+
+export { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime };

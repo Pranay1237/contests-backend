@@ -1,6 +1,8 @@
 import { JSDOM } from 'jsdom';
 import axios from 'axios';
 
+import { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime } from './utils/convertions.js';
+
 const scrapeLeetcode = async () => {
 	try {
 		const response = await axios.get('https://leetcode.com/graphql?query={ allContests { title titleSlug startTime duration __typename } }');
@@ -24,24 +26,18 @@ const scrapeCodechef = async () => {
 const scrapeCodeforces = async () => {
 
 	try {
-		const response = await axios.get('https://codeforces.com/contests');
+		const response = await axios.get('https://codeforces.com/api/contest.list?gym=false');
 
+		const c = response.data.result;
+		const upcomingContests = c.filter(contest => contest.phase === 'BEFORE');
 		const contests = [];
 
-		const dom = new JSDOM(response.data);
-		const table = dom.window.document.querySelector("table");
-		const rows = table.querySelectorAll("tr");
-		for(let i = 1; i < rows.length; i++) {
-			const cols = rows[i].querySelectorAll("td");
-			const name = cols[0].textContent.trim();
-			const start = cols[2].textContent.trim();
-			const duration = cols[3].textContent.trim();
-			const startsIn = cols[4].textContent.trim();
-			let register = cols[5].querySelector("a");
-			if(register)
-				register = "https://codeforces.com" + register.getAttribute("href");
-			else
-				register = "";
+		for(let i = 0; i < upcomingContests.length; i++) {
+			const name = upcomingContests[i].name;
+			const start = convertSecondsToLocaleStartTime(upcomingContests[i].startTimeSeconds);
+			const duration = convertSecondsToHoursAndMinutes(upcomingContests[i].durationSeconds);
+			const startsIn = convertSecondsToLocaleStartTime(upcomingContests[i].relativeTimeSeconds);
+			const register = `https://codeforces.com/contestRegistration/${upcomingContests[i].id}`;
 
 			const contest = {
 				name: name,
