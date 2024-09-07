@@ -12,7 +12,7 @@ const scrapeLeetcode = async () => {
 		for(let i = 0; i < 2; i++) {
 			const name = res[i].title;
 			const start = convertSecondsToLocaleStartTime(res[i].startTime);
-			const duration = convertSecondsToHoursAndMinutes(res[i].duration);
+			const duration = convertSecondsToHoursAndMinutes(res[i].duration + 5*60*60 + 30*60);
 			const startsIn = convertSecondsToLocaleStartTime(getRelativeTimeInSeconds(res[i].startTime));
 			const register = `https://leetcode.com/contest/${res[i].titleSlug}/register/`;
 			contests.push(new ContestDetails(name, start, duration, startsIn, register, 'LeetCode'));
