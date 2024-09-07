@@ -11,6 +11,7 @@ const scrapeLeetcode = async () => {
 		const contests = [];
 		for(let i = 0; i < 2; i++) {
 			const name = res[i].title;
+			res[i].duration = res[i].duration + 5*60*60 + 30*60;
 			const start = convertSecondsToLocaleStartTime(res[i].startTime);
 			const duration = convertSecondsToHoursAndMinutes(res[i].duration + 5*60*60 + 30*60);
 			const startsIn = convertSecondsToLocaleStartTime(getRelativeTimeInSeconds(res[i].startTime));
