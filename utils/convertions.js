@@ -33,4 +33,17 @@ const convertISOToSeconds = (iso) => {
     return date.getTime() / 1000;
 };
 
-export { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime, getRelativeTimeInSeconds, convertISOToLocaleStartTime, convertISOToSeconds };
+const convertMinutesToHoursAndMinutes = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return { hours, mins };
+};
+
+export { 
+    convertSecondsToHoursAndMinutes, 
+    convertSecondsToLocaleStartTime, 
+    getRelativeTimeInSeconds, 
+    convertISOToLocaleStartTime, 
+    convertISOToSeconds,
+    convertMinutesToHoursAndMinutes
+};

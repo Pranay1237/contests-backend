@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime, getRelativeTimeInSeconds, convertISOToLocaleStartTime, convertISOToSeconds } from './utils/convertions.js';
+import { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime, getRelativeTimeInSeconds, convertISOToLocaleStartTime, convertISOToSeconds, convertMinutesToHoursAndMinutes } from './utils/convertions.js';
 import { leetcodeLink, codechefLink, codeforcesLink, ctfLink } from './utils/links.js';
 import { ContestDetails } from './models/ContestDetails.js';
 
@@ -32,7 +32,7 @@ const scrapeCodechef = async () => {
 		for(let i = 0; i < res.length ; i++) {
 			const name = res[i].contest_name;
 			const start = convertISOToLocaleStartTime(res[i].contest_start_date_iso);
-			const duration = convertSecondsToHoursAndMinutes(res[i].contest_duration);
+			const duration = convertMinutesToHoursAndMinutes(res[i].contest_duration);
 			const startsIn = convertSecondsToLocaleStartTime(getRelativeTimeInSeconds(convertISOToSeconds(res[i].contest_start_date_iso)));
 			const register = `https://www.codechef.com/${res[i].code}`;
 			contests.push(new ContestDetails(name, start, duration, startsIn, register, 'CodeChef'));
