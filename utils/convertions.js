@@ -17,4 +17,20 @@ const convertSecondsToLocaleStartTime = (seconds) => {
     return date.toDateString() + ' ' + date.toLocaleTimeString();
 };
 
-export { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime };
+const getRelativeTimeInSeconds = (seconds) => {
+    const date = new Date(seconds * 1000);
+    const now = new Date();
+    return (now - date) / 1000;
+}
+
+const convertISOToLocaleStartTime = (iso) => {
+    const date = new Date(iso);
+    return date.toDateString() + ' ' + date.toLocaleTimeString();
+};
+
+const convertISOToSeconds = (iso) => {
+    const date = new Date(iso);
+    return date.getTime() / 1000;
+};
+
+export { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime, getRelativeTimeInSeconds, convertISOToLocaleStartTime, convertISOToSeconds };

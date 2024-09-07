@@ -27,8 +27,7 @@ app.get('/codechef', (req, res) => {
 app.get('/leetcode', (req, res) => {
     scrapeLeetcode()
         .then((contests) => {
-            const ans = contests.data.allContests.slice(0, 2);
-            res.send(ans);
+            res.send(contests);
         })
         .catch((error) => {
             console.error(error);
