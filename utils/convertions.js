@@ -5,6 +5,12 @@ const convertSecondsToHoursAndMinutes = (seconds) => {
     return { hours, minutes };
 };
 
+const convertMinutesToHoursAndMinutes = (mins) => {
+    const hours = Math.floor(mins / 60);
+    const minutes = mins % 60;
+    return { hours, minutes };
+};
+
 const convertSecondsToLocaleStartTime = (seconds) => {
     if (seconds < 0) {
         seconds = Math.abs(seconds);
@@ -31,12 +37,6 @@ const convertISOToLocaleStartTime = (iso) => {
 const convertISOToSeconds = (iso) => {
     const date = new Date(iso);
     return date.getTime() / 1000;
-};
-
-const convertMinutesToHoursAndMinutes = (minutes) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return { hours, mins };
 };
 
 export { 
