@@ -4,16 +4,16 @@ import { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime, getRe
 import { leetcodeLink, codechefLink, codeforcesLink, ctfLink } from './utils/links.js';
 import { ContestDetails } from './models/ContestDetails.js';
 
-const scrapeLeetcode = async (locale) => {
+const scrapeLeetcode = async () => {
 	try {
 		const response = await axios.get(leetcodeLink);
 		const res = response.data.data.allContests;
 		const contests = [];
 		for(let i = 0; i < 2; i++) {
 			const name = res[i].title;
-			const start = convertSecondsToLocaleStartTime(res[i].startTime, locale);
+			const start = convertSecondsToLocaleStartTime(res[i].startTime);
 			const duration = convertSecondsToHoursAndMinutes(res[i].duration);
-			const startsIn = convertSecondsToLocaleStartTime(getRelativeTimeInSeconds(res[i].startTime), locale);
+			const startsIn = convertSecondsToLocaleStartTime(getRelativeTimeInSeconds(res[i].startTime));
 			const register = `https://leetcode.com/contest/${res[i].titleSlug}/register/`;
 			contests.push(new ContestDetails(name, start, duration, startsIn, register, 'LeetCode'));
 		}
@@ -23,7 +23,7 @@ const scrapeLeetcode = async (locale) => {
 	}
 };
 
-const scrapeCodechef = async (locale) => {
+const scrapeCodechef = async () => {
 	try {
 		const response = await axios.get(codechefLink);
 
@@ -31,9 +31,9 @@ const scrapeCodechef = async (locale) => {
 		const contests = [];
 		for(let i = 0; i < res.length ; i++) {
 			const name = res[i].contest_name;
-			const start = convertISOToLocaleStartTime(res[i].contest_start_date_iso, locale);
+			const start = convertISOToLocaleStartTime(res[i].contest_start_date_iso);
 			const duration = convertMinutesToHoursAndMinutes(res[i].contest_duration);
-			const startsIn = convertSecondsToLocaleStartTime(getRelativeTimeInSeconds(convertISOToSeconds(res[i].contest_start_date_iso)), locale);
+			const startsIn = convertSecondsToLocaleStartTime(getRelativeTimeInSeconds(convertISOToSeconds(res[i].contest_start_date_iso)));
 			const register = `https://www.codechef.com/${res[i].code}`;
 			contests.push(new ContestDetails(name, start, duration, startsIn, register, 'CodeChef'));
 		}
@@ -44,7 +44,7 @@ const scrapeCodechef = async (locale) => {
 	}
 };
 
-const scrapeCodeforces = async (locale) => {
+const scrapeCodeforces = async () => {
 
 	try {
 		const response = await axios.get(codeforcesLink);
@@ -55,9 +55,9 @@ const scrapeCodeforces = async (locale) => {
 
 		for(let i = 0; i < upcomingContests.length; i++) {
 			const name = upcomingContests[i].name;
-			const start = convertSecondsToLocaleStartTime(upcomingContests[i].startTimeSeconds, locale);
+			const start = convertSecondsToLocaleStartTime(upcomingContests[i].startTimeSeconds);
 			const duration = convertSecondsToHoursAndMinutes(upcomingContests[i].durationSeconds);
-			const startsIn = convertSecondsToLocaleStartTime(upcomingContests[i].relativeTimeSeconds, locale);
+			const startsIn = convertSecondsToLocaleStartTime(upcomingContests[i].relativeTimeSeconds);
 			const register = `https://codeforces.com/contestRegistration/${upcomingContests[i].id}`;
 
 			contests.push(new ContestDetails(name, start, duration, startsIn, register , 'Codeforces'));
