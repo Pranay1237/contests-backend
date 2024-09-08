@@ -11,7 +11,7 @@ const convertMinutesToHoursAndMinutes = (mins) => {
     return { hours, minutes };
 };
 
-const convertSecondsToLocaleStartTime = (seconds) => {
+const convertSecondsToLocaleStartTime = (seconds, locale) => {
     if (seconds < 0) {
         seconds = Math.abs(seconds);
         const days = Math.floor(seconds / 86400);
@@ -20,7 +20,7 @@ const convertSecondsToLocaleStartTime = (seconds) => {
         return { days, hours, minutes };
     }
     const date = new Date(seconds * 1000);
-    return date.toDateString() + ' ' + date.toLocaleTimeString();
+    return date.toLocaleString(locale);
 };
 
 const getRelativeTimeInSeconds = (seconds) => {
@@ -29,9 +29,9 @@ const getRelativeTimeInSeconds = (seconds) => {
     return (now - date) / 1000;
 }
 
-const convertISOToLocaleStartTime = (iso) => {
+const convertISOToLocaleStartTime = (iso, locale) => {
     const date = new Date(iso);
-    return date.toDateString() + ' ' + date.toLocaleTimeString();
+    return date.toLocaleString(locale);
 };
 
 const convertISOToSeconds = (iso) => {
