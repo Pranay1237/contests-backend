@@ -14,8 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/codechef', (req, res) => {
-    const locale = req.query.locale;
-    scrapeCodechef(locale)
+    scrapeCodechef()
         .then((contests) => {
             res.send(contests);
         })
@@ -26,8 +25,7 @@ app.get('/codechef', (req, res) => {
 });
 
 app.get('/leetcode', (req, res) => {
-    const locale = req.query.locale;
-    scrapeLeetcode(locale)
+    scrapeLeetcode()
         .then((contests) => {
             res.send(contests);
         })
@@ -38,8 +36,7 @@ app.get('/leetcode', (req, res) => {
 });
 
 app.get('/codeforces', (req, res) => {
-    const locale = req.query.locale;
-    scrapeCodeforces(locale)
+    scrapeCodeforces()
         .then((contests) => {
             res.send(contests);
         })

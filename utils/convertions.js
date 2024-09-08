@@ -1,4 +1,3 @@
-
 const convertSecondsToHoursAndMinutes = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -11,7 +10,7 @@ const convertMinutesToHoursAndMinutes = (mins) => {
     return { hours, minutes };
 };
 
-const convertSecondsToLocaleStartTime = (seconds, locale) => {
+const convertSecondsToLocaleStartTime = (seconds) => {
     if (seconds < 0) {
         seconds = Math.abs(seconds);
         const days = Math.floor(seconds / 86400);
@@ -20,7 +19,8 @@ const convertSecondsToLocaleStartTime = (seconds, locale) => {
         return { days, hours, minutes };
     }
     const date = new Date(seconds * 1000);
-    return date.toLocaleString(locale);
+    const formattedDate = date.toDateString() + ' ' + date.toLocaleTimeString(undefined, { timeZone: 'Asia/Kolkata' });
+    return formattedDate;
 };
 
 const getRelativeTimeInSeconds = (seconds) => {
@@ -29,9 +29,10 @@ const getRelativeTimeInSeconds = (seconds) => {
     return (now - date) / 1000;
 }
 
-const convertISOToLocaleStartTime = (iso, locale) => {
+const convertISOToLocaleStartTime = (iso) => {
     const date = new Date(iso);
-    return date.toLocaleString(locale);
+    const formattedDate = date.toDateString() + ' ' + date.toLocaleTimeString(undefined, { timeZone: 'Asia/Kolkata' });
+    return formattedDate;
 };
 
 const convertISOToSeconds = (iso) => {
