@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import { scrapeCodechef, scrapeLeetcode, scrapeCodeforces, scrapeCTF } from './scraping.js';
+import { scrapeCodechef, scrapeLeetcode, scrapeCodeforces, scrapeAtCoder, scrapeCTF } from './scraping.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -37,6 +37,17 @@ app.get('/leetcode', (req, res) => {
 
 app.get('/codeforces', (req, res) => {
     scrapeCodeforces()
+        .then((contests) => {
+            res.send(contests);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("An error occurred while scraping the contests.");
+        });
+});
+
+app.get('/atcoder', (req, res) => {
+    scrapeAtCoder()
         .then((contests) => {
             res.send(contests);
         })

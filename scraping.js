@@ -1,7 +1,8 @@
+import { JSDOM } from 'jsdom';
 import axios from 'axios';
 
 import { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime, getRelativeTimeInSeconds, convertISOToLocaleStartTime, convertISOToSeconds, convertMinutesToHoursAndMinutes } from './utils/convertions.js';
-import { leetcodeLink, codechefLink, codeforcesLink, ctfLink } from './utils/links.js';
+import { leetcodeLink, codechefLink, codeforcesLink, atcoderLink, ctfLink } from './utils/links.js';
 import { ContestDetails } from './models/ContestDetails.js';
 
 const scrapeLeetcode = async () => {
@@ -68,6 +69,32 @@ const scrapeCodeforces = async () => {
 	}
 };
 
+const scrapeAtCoder = async () => {
+	try {
+		const response = await axios.get(atcoderLink);
+		const contests = [];
+		const dom = new JSDOM(response.data);
+		const table = dom.window.document.getElementById('contest-table-upcoming');
+		console.log(dom.window.document);
+		// const rows = table.querySelectorAll('tr');
+
+		// for (let i = 1; i < rows.length; i++) {
+		// 	const columns = rows[i].querySelectorAll('td');
+		// 	const name = columns[1].textContent;
+		// 	const start = columns[2].textContent;
+		// 	const duration = columns[3].textContent;
+		// 	const startsIn = columns[4].textContent;
+		// 	const register = columns[5].querySelector('a').href;
+
+		// 	contests.push(new ContestDetails(name, start, duration, startsIn, register, 'AtCoder'));
+		// }
+
+		return table;
+	} catch (error) {
+		throw new Error('An error occurred while scraping the contests.', error);
+	}
+};
+
 const scrapeCTF = async () => {
 	try {
 		const response = await axios.get(ctfLink);
@@ -77,4 +104,4 @@ const scrapeCTF = async () => {
 	}
 };
 
-export { scrapeLeetcode, scrapeCodechef, scrapeCodeforces, scrapeCTF };
+export { scrapeLeetcode, scrapeCodechef, scrapeCodeforces, scrapeAtCoder, scrapeCTF };
