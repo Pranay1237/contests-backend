@@ -1,9 +1,9 @@
 import { JSDOM } from 'jsdom';
 import axios from 'axios';
 
-import { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime, getRelativeTimeInSeconds, convertISOToLocaleStartTime, convertISOToSeconds, convertMinutesToHoursAndMinutes } from './utils/convertions.js';
-import { leetcodeLink, codechefLink, codeforcesLink, atcoderLink, ctfLink } from './utils/links.js';
-import { ContestDetails } from './models/ContestDetails.js';
+import { convertSecondsToHoursAndMinutes, convertSecondsToLocaleStartTime, getRelativeTimeInSeconds, convertISOToSeconds, convertMinutesToHoursAndMinutes, convertISOToEpochTime } from '../utils/convertions.js';
+import { leetcodeLink, codechefLink, codeforcesLink, atcoderLink, ctfLink } from '../utils/links.js';
+import { ContestDetails } from '../models/ContestDetails.js';
 
 const scrapeLeetcode = async () => {
 	try {
@@ -12,7 +12,7 @@ const scrapeLeetcode = async () => {
 		const contests = [];
 		for(let i = 0; i < 2; i++) {
 			const name = res[i].title;
-			const start = convertSecondsToLocaleStartTime(res[i].startTime);
+			const start = res[i].startTime;
 			const duration = convertSecondsToHoursAndMinutes(res[i].duration);
 			const startsIn = convertSecondsToLocaleStartTime(getRelativeTimeInSeconds(res[i].startTime));
 			const register = `https://leetcode.com/contest/${res[i].titleSlug}/register/`;
@@ -32,7 +32,7 @@ const scrapeCodechef = async () => {
 		const contests = [];
 		for(let i = 0; i < res.length ; i++) {
 			const name = res[i].contest_name;
-			const start = convertISOToLocaleStartTime(res[i].contest_start_date_iso);
+			const start = convertISOToEpochTime(res[i].contest_start_date_iso);
 			const duration = convertMinutesToHoursAndMinutes(res[i].contest_duration);
 			const startsIn = convertSecondsToLocaleStartTime(getRelativeTimeInSeconds(convertISOToSeconds(res[i].contest_start_date_iso)));
 			const register = `https://www.codechef.com/${res[i].code}`;
@@ -56,7 +56,7 @@ const scrapeCodeforces = async () => {
 
 		for(let i = 0; i < upcomingContests.length; i++) {
 			const name = upcomingContests[i].name;
-			const start = convertSecondsToLocaleStartTime(upcomingContests[i].startTimeSeconds);
+			const start = upcomingContests[i].startTimeSeconds;
 			const duration = convertSecondsToHoursAndMinutes(upcomingContests[i].durationSeconds);
 			const startsIn = convertSecondsToLocaleStartTime(upcomingContests[i].relativeTimeSeconds);
 			const register = `https://codeforces.com/contestRegistration/${upcomingContests[i].id}`;

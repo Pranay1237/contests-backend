@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import { scrapeCodechef, scrapeLeetcode, scrapeCodeforces, scrapeAtCoder, scrapeCTF } from './scraping.js';
+import { scrapeCodechef, scrapeLeetcode, scrapeCodeforces, scrapeAtCoder, scrapeCTF } from './scraping/scraping.js';
 
 const app = express();
 const port = process.env.PORT || 3000;

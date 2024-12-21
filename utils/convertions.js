@@ -40,11 +40,17 @@ const convertISOToSeconds = (iso) => {
     return date.getTime() / 1000;
 };
 
+const convertISOToEpochTime = (iso) => {
+    const date = new Date(iso);
+    return Math.floor(date.getTime()/1000);
+}
+
 export { 
     convertSecondsToHoursAndMinutes, 
     convertSecondsToLocaleStartTime, 
     getRelativeTimeInSeconds, 
     convertISOToLocaleStartTime, 
     convertISOToSeconds,
-    convertMinutesToHoursAndMinutes
+    convertMinutesToHoursAndMinutes,
+    convertISOToEpochTime
 };
